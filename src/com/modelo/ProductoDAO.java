@@ -68,7 +68,6 @@ public class ProductoDAO {
 	
 	public void listarImg(int id, HttpServletResponse response) {
 		String sql = "select * from producto where idProducto =" +id;
-		System.out.println(sql);
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		BufferedInputStream bufferedInputStream = null;
@@ -89,15 +88,15 @@ public class ProductoDAO {
 			
 			
 			
-			FileOutputStream ficheronuevo = new FileOutputStream("/Users/macbookAir/eclipse-workspace/ProyectoWEBDinamico/imagen"+id +".jpg");
+			//FileOutputStream ficheronuevo = new FileOutputStream("/Users/macbookAir/eclipse-workspace/ProyectoWEBDinamico/imagen"+id +".jpg");
 			int i = 0;
 			while((i = bufferedInputStream.read()) != -1) {
-				ficheronuevo.write(i);
+				//ficheronuevo.write(i);
 				bufferedOutputStream.write(i);
 				
 				
 			}
-			ficheronuevo.close();
+			//ficheronuevo.close();
 			
 		}catch(Exception e) {
 			e.getStackTrace();

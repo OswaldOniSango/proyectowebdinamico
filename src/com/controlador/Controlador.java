@@ -42,23 +42,50 @@ public class Controlador extends HttpServlet {
 			String accion = request.getParameter("accion");
 	    	productos = pDAO.listar();
 	    	Producto p = new Producto();
+	    	int idp;
+	    	Carro car;
 	    	switch(accion) {
-	    		case "AgregarCarrito":
-	    			int idp = Integer.parseInt(request.getParameter("id"));
+	    	  	case "Comprar":
+	    	  		totalPagar = 0;
+	    	  		idp = Integer.parseInt(request.getParameter("id"));
 	    			p = pDAO.listarID(idp);
 	    			item += 1;
-	    			Carro car = new Carro ();
+	    			car = new Carro ();
 	    			car.setItem(item);
-	    			car.setIdProduco(p.getId());
+	    			car.setIdProducto(p.getId());
 	    			car.setNombre(p.getNombre());
 	    			car.setDescripcion(p.getDescripcion());
 	    			car.setPrecioCompra(p.getPrecio());
 	    			car.setCantidad(cantidad);
 	    			car.setSubTotal(cantidad*p.getPrecio());
 	    			listaCarrito.add(car);
+	    			for (int i = 0 ; i < listaCarrito.size() ; i++) {
+	    				totalPagar = totalPagar + listaCarrito.get(i).getSubTotal();
+	    			}
+	    			request.setAttribute("totalPagar",totalPagar);
+	    			request.setAttribute("carrito", listaCarrito);
+	    			request.setAttribute("contador",listaCarrito.size());
+	    			request.getRequestDispatcher("carrito.jsp").forward(request, response);
+	    			break;
+	    	
+	    		case "AgregarCarrito":
+	    			idp = Integer.parseInt(request.getParameter("id"));
+	    			p = pDAO.listarID(idp);
+	    			item += 1;
+	    			car = new Carro ();
+	    			car.setItem(item);
+	    			car.setIdProducto(p.getId());
+	    			car.setNombre(p.getNombre());
+	    			car.setDescripcion(p.getDescripcion());
+	    			car.setPrecioCompra(p.getPrecio());
+	    			car.setCantidad(cantidad);
+	    			car.setSubTotal(cantidad*p.getPrecio());
+	    			listaCarrito.add(car);
+	    			
 	    			request.setAttribute("contador",listaCarrito.size());
 	    			request.getRequestDispatcher("Controlador?accion=home").forward(request,response);
 	    			break;
+	    		
 	    		case "Carrito":
 	    			totalPagar = 0.00;
 	    			request.setAttribute("carrito", listaCarrito);
@@ -68,7 +95,13 @@ public class Controlador extends HttpServlet {
 	    			request.setAttribute("totalPagar",totalPagar);
 	    			request.getRequestDispatcher("carrito.jsp").forward(request, response);
 	    			
-	    		
+	    		case "Eliminar":
+	    			int idPro = Integer.parseInt(request.getParameter("idp"));
+	    			for(int i = 0 ; i < listaCarrito.size() ; i++ ) {
+	    				if(idPro== listaCarrito.get(i).getIdProducto()) {
+	    					listaCarrito.remove(i);
+	    				}
+	    			}
 	    			break;	
 	    			
 	    			

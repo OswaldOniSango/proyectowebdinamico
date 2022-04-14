@@ -2,7 +2,7 @@ package com.modelo;
 
 public class Carro {
 	int item;
-	int idProduco;
+	int idProducto;
 	String nombre;
 	String descripcion;
 	double precioCompra;
@@ -13,11 +13,11 @@ public class Carro {
 		
 	}
 	
-	public Carro(int item, int idProduco, String nombre, String descripcion, double precioCompra, int cantidad,
+	public Carro(int item, int idProducto, String nombre, String descripcion, double precioCompra, int cantidad,
 			double subTotal) {
 		super();
 		this.item = item;
-		this.idProduco = idProduco;
+		this.idProducto = idProducto;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precioCompra = precioCompra;
@@ -30,11 +30,11 @@ public class Carro {
 	public void setItem(int item) {
 		this.item = item;
 	}
-	public int getIdProduco() {
-		return idProduco;
+	public int getIdProducto() {
+		return idProducto;
 	}
-	public void setIdProduco(int idProduco) {
-		this.idProduco = idProduco;
+	public void setIdProducto(int idProduco) {
+		this.idProducto = idProduco;
 	}
 	public String getNombre() {
 		return nombre;
