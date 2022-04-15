@@ -34,5 +34,18 @@ $(document).ready(function (){
 			}
 		})
 	}
+	$("tr #cantidad").click(function(){
+		var idp = $(this).parent().find("#idpro").val();
+		var cantidad = $(this).parent().find("#cantidad").val();
+		var url = "Controlador?accion=ActualizarCantidad";
+		$.ajax({
+			type: 'POST',
+			url : url,
+			data : "idp="+idp+"&cantidad="+cantidad,
+			success:function(data, textStatus, jqXHR){
+				parent.location.href="Controlador?accion=Carrito"
+			}
+		});
+	});
 	
-})
+});

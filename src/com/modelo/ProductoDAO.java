@@ -72,7 +72,7 @@ public class ProductoDAO {
 		OutputStream outputStream = null;
 		BufferedInputStream bufferedInputStream = null;
 		BufferedOutputStream bufferedOutputStream = null;
-		response.setContentType("image/*");
+		
 		
 		try {
 			outputStream = response.getOutputStream();
@@ -80,23 +80,17 @@ public class ProductoDAO {
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			if(rs.next()) {
-				inputStream = rs.getAsciiStream("foto");
-				
+				Blob pic = rs.getBlob(3);
+				inputStream = pic.getBinaryStream();
+				int len = -1;
+				byte[] buf = new byte[4096];
+				bufferedInputStream = new BufferedInputStream(inputStream);
+				bufferedOutputStream = new BufferedOutputStream(outputStream);
+				while((len = bufferedInputStream.read(buf)) != -1) {
+					bufferedOutputStream.write(buf, 0, len);
+				}
+				bufferedOutputStream.close();
 			}
-			bufferedInputStream = new BufferedInputStream(inputStream);
-			bufferedOutputStream = new BufferedOutputStream(outputStream);
-			
-			
-			
-			//FileOutputStream ficheronuevo = new FileOutputStream("/Users/macbookAir/eclipse-workspace/ProyectoWEBDinamico/imagen"+id +".jpg");
-			int i = 0;
-			while((i = bufferedInputStream.read()) != -1) {
-				//ficheronuevo.write(i);
-				bufferedOutputStream.write(i);
-				
-				
-			}
-			//ficheronuevo.close();
 			
 		}catch(Exception e) {
 			e.getStackTrace();

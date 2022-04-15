@@ -68,14 +68,18 @@
 								<tr>
 									<td>${prodCarrito.getItem()}</td>
 									<td>${prodCarrito.getNombre()}</td>
-									<td>${prodCarrito.getDescripcion()}</td>
+									<td>${prodCarrito.getDescripcion()}
+										<img src="ControladorIMG?id=${prodCarrito.getIdProducto()}" width="100" height="100">
+									</td>
 									<td>${prodCarrito.getPrecioCompra()}</td>
-									<td>${prodCarrito.getCantidad()}</td>
+									<td>
+										<input type="hidden" id= "idpro" value="${prodCarrito.getIdProducto()}">
+										<input class ="form-control text-center" type="number" id="cantidad" min ="1" value="${prodCarrito.getCantidad()}">
+									</td>
 									<td>${prodCarrito.getSubTotal()}</td>
 									<td>
 										<input type="hidden" id= "idp" value="${prodCarrito.getIdProducto()}">													
 										<a id= "btnEliminar" href="#">Eliminar</a>
-										<a href="#">Editar</a>
 									</td>
 								</tr>
 							</c:forEach>								

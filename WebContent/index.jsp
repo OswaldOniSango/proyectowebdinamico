@@ -27,7 +27,7 @@
 			          <a class="nav-link" href="#">Ofertas del Dia</a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="Controlador?accion=Carrito"><i class="fas fa-cart-plus"><label style="color: darkorange">${contador}</label></i>Carrito de Compras</a>
+			          <a class="nav-link" href="Controlador?accion=Carrito" title="Carrito de Compras"><i class="fas fa-cart-plus"><label style="color: darkorange">  (${contador})</label></i></a>
 			        </li>
 			      </ul>
 			      <form class="d-flex">
@@ -57,13 +57,13 @@
 							<label>${p.getNombre()}</label>
 						</div>
 						<div class="card-body text-center">
-						<img src="ControladorIMG?id=${p.getId()}" width="200" height = "180"><br>
+						<img src="ControladorIMG?id=${p.getId()}" width="200" height = "250"><br>
 							<i>US$ ${p.getPrecio()}</i>
 						</div>
 						<div class="card-footer text-center">
 							<label>${p.getDescripcion()}</label>
 							<div>
-								<a href="Controlador?accion=AgregarCarrito&id=${p.getId()}" class="btn btn-outline-info">Agregar a Carrito</a>
+								<a href="Controlador?accion=AgregarCarrito&id=${p.getId()}" class="btn btn-outline-info"><i class="fas fa-cart-plus">Agregar a Carrito</i></a>
 								<a href="Controlador?accion=Comprar&id=${p.getId()}"class="btn btn-danger">Comprar</a>
 							</div>
 						</div>
