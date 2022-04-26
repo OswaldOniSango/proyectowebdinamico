@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.modelo.Carro;
+import com.modelo.Cliente;
+import com.modelo.ClienteDAO;
 import com.modelo.Producto;
 import com.modelo.ProductoDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Controlador
@@ -34,6 +37,10 @@ public class Controlador extends HttpServlet {
     int item;
     double totalPagar;
     int cantidad = 1;
+    String nombreClienteLogueado = "Iniciar sesion";
+    String emailClienteLogueado = "Registrarse";
+    Cliente cliente = new Cliente();
+	ClienteDAO cdao = new ClienteDAO();
     
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,6 +49,11 @@ public class Controlador extends HttpServlet {
 			String accion = request.getParameter("accion");
 	    	productos = pDAO.listar();
 	    	Producto p = new Producto();
+	    	HttpSession session = request.getSession();
+	    	session.setAttribute("log", nombreClienteLogueado);
+	        session.setAttribute("logmail", emailClienteLogueado);
+
+	        
 	    	int idp;
 	    	Carro car;
 	    	switch(accion) {
@@ -124,7 +136,7 @@ public class Controlador extends HttpServlet {
 	    			}
 	    			request.setAttribute("totalPagar",totalPagar);
 	    			request.getRequestDispatcher("carrito.jsp").forward(request, response);
-	    			
+	    			break;
 	    		case "Eliminar":
 	    			int idPro = Integer.parseInt(request.getParameter("idp"));
 	    			for(int i = 0 ; i < listaCarrito.size() ; i++ ) {
@@ -143,10 +155,77 @@ public class Controlador extends HttpServlet {
 	    					listaCarrito.get(i).setSubTotal(cantidad*listaCarrito.get(i).getPrecioCompra());
 	    				}
 	    			}
+	    			break;
+	    		case "InicioSesion":
+	    			String emailSesion = request.getParameter("email");
+	    			String passwordSesion = request.getParameter("password");
+	    			System.out.println(passwordSesion);
 	    			
+	    			
+	    			cliente = cdao.validarCliente(emailSesion, passwordSesion);
+	    			if (cliente.getNombre() != null && cliente.getDni() != null && cliente.getEmail() != null) {
+	    				session = request.getSession();
+		    			nombreClienteLogueado = cliente.getNombre() + " " + cliente.getApellido();
+		    			emailClienteLogueado = cliente.getEmail();
+	    				request.setAttribute("cliente", cliente);
+	    				request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
+	    			}else {
+	    				String errorValidacion = "Usuario o contraseña incorrecta";
+	    				request.setAttribute("ErrorValidacion", errorValidacion);
+	    				request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);
+	    			}
+	    			
+	    			
+	    			
+	    			break;
+	    			
+	    		case "RegistroClientes":
+	    			
+	    			
+	    			
+	    			String nombre = request.getParameter("nombre");
+	    			String apellido = request.getParameter("apellido");
+	    			String dni = request.getParameter("dni");
+	    			String email = request.getParameter("email");
+	    			String password = request.getParameter("password");
+	    			String password1 = request.getParameter("password1");
+	    			
+	    			if (password1.equals(password)) {
+	    			
+	    			cliente.setNombre(nombre);
+	    			cliente.setApellido(apellido);
+	    			cliente.setDni(dni);
+	    			cliente.setEmail(email);
+	    			cliente.setPassword(password);
+	    			session = request.getSession();
+	    			nombreClienteLogueado = cliente.getNombre() + " " + cliente.getApellido();
+	    			emailClienteLogueado = cliente.getEmail();
+	    			
+	    			cdao.insertarCliente(cliente);
+	    			
+	    			
+	    			request.setAttribute("cliente", cliente);
+	    			request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
+	    			} else {
+	    				String errorPass = "Las contraseñas deben coincidir";
+	    				request.setAttribute("ContraseñaInvalida", errorPass);
+	    				request.getRequestDispatcher("registro.jsp").forward(request, response);
+	    			}
+	    			break;
+	            
+	    		
+	    		case "CerrarSesion":
+	    			listaCarrito = new ArrayList<>();
+	                cliente = new Cliente();
+	                session.invalidate();
+	                nombreClienteLogueado = "Iniciar Sesion";
+	                emailClienteLogueado = "Registrarse";
+	                request.getRequestDispatcher("Controlador?accion=Salir").forward(request, response);
+	                break;	
 	    			
 	    		default:
 	    		request.setAttribute("productos", productos);
+	    		request.setAttribute("totalPagar",totalPagar);
 	    		request.getRequestDispatcher("index.jsp").forward(request, response);
 	    	}
 		

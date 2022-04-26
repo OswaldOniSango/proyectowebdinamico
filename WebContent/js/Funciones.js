@@ -18,7 +18,7 @@ $(document).ready(function (){
 				}
 			});
 		  } else {
-		    swal("Item, no eliminado");
+		    swal("Perfecto, Tu Item no ha sido eliminado");
 		  }
 		});
 		
