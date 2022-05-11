@@ -20,7 +20,7 @@
 								<input name ="email"type="email" class="form-control"><br>
 								
 								<label>Contraseña</label>
-								<input name= "password" type="text" class="form-control"><br>
+								<input name= "password" type="password" class="form-control"><br>
 								<button type="submit" name ="accion" value="InicioSesion" class="btn btn-primary btn-lg btn-block col-sm-12" class>Iniciar sesión</button><br>
 								
 									<div class="text-center"><hr class="my-3 text-center"><h5></h5>¿Eres nuevo en OswaldoStore?</h5>

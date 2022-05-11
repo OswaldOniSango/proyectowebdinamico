@@ -7,12 +7,13 @@ public class Cliente {
 	private String dni;
 	private String email;
 	private String password;
+	private String tipoUsuario;
 	
 	public Cliente () {
 		
 	}
 
-	public Cliente(String nombre, String apellido, String dni, String email, String password) {
+	public Cliente(String nombre, String apellido, String dni, String email, String password, String tipoUsuario) {
 		super();
 		
 		this.nombre = nombre;
@@ -20,6 +21,7 @@ public class Cliente {
 		this.dni = dni;
 		this.email = email;
 		this.password = password;
+		this.tipoUsuario = tipoUsuario;
 	}
 
 	
@@ -60,6 +62,14 @@ public class Cliente {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
 	}
 	
 	

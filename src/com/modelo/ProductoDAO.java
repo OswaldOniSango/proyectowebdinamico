@@ -95,4 +95,62 @@ public class ProductoDAO {
 		
 		
 	}
+	
+	public int insertarProducto (Producto producto) {
+		
+		int operacion = -1;
+		String sql = "Insert into producto(idProducto, nombre, foto, descripcion, precio, stock) values(?, ?, ? ,?, ?, ?)";
+		
+		try {
+			conn = cn.obtenerConexion();
+			ps = conn.prepareStatement(sql);
+
+			//----------------------------------------------------------
+			InputStream is = producto.getFoto();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			int len = -1;
+			byte [] buf = new byte[4096];
+			while ((len = is.read(buf)) != -1) {
+				baos.write(buf, 0 , len);
+			}
+			baos.close();
+			is.close();
+			byte[] bytes = baos.toByteArray();
+			Blob pic = conn.createBlob();
+			pic.setBytes(1, bytes);
+			
+			//----------------------------------------------------------
+			
+			ps.setInt   (1, producto.getId());
+			ps.setString(2, producto.getNombre());
+			ps.setBlob  (3, pic);
+			ps.setString(4, producto.getDescripcion());
+			ps.setDouble(5, producto.getPrecio());
+			ps.setInt   (6, producto.getStock());
+			operacion = ps.executeUpdate();
+			ps.close();
+			conn.close();
+
+			
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		return operacion;
+			
+	}
+	public void EliminarProducto(int id) {
+		
+		String sql = "delete from producto where idProducto="+id;
+		try {
+			
+			conn = cn.obtenerConexion();
+			ps = conn.prepareStatement(sql);
+			ps.execute();
+			ps.close();
+			conn.close();
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		
+	}
 }
