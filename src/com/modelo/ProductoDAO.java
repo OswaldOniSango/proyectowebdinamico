@@ -153,4 +153,31 @@ public class ProductoDAO {
 		}
 		
 	}
+	public List<Producto> BuscarProducto(String busqueda){
+		List <Producto> productos = new ArrayList<Producto>();
+		String sql = "select * from producto where descripcion like '%" + busqueda + "%'";
+		
+		try {
+			
+			conn = cn.obtenerConexion();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Producto p = new Producto();
+				p.setId(rs.getInt("idProducto"));
+				p.setNombre(rs.getString("nombre"));
+				p.setFoto(rs.getBinaryStream("foto"));
+				p.setDescripcion(rs.getString("descripcion"));
+				p.setPrecio(rs.getDouble("precio"));
+				p.setStock(rs.getInt("stock"));
+				productos.add(p);
+			}
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		
+		
+		return productos;
+		
+	}
 }

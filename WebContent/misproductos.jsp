@@ -9,8 +9,8 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
 	</head>
 	<body>
-		<c:choose>
-	<c:when test="${cliente.getNombre() != null}">
+	<c:choose>
+	<c:when test="${cliente.getTipoUsuario() == 'ADMINISTRADOR'}">
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			  <div class="container-fluid">
 			    <a class="navbar-brand" href="Controlador?accion=home">Store</a>
@@ -30,24 +30,16 @@
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
 			        </li>
 			      </ul>
-			      <form class="d-flex">
-			        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			        <button class="btn btn-outline-secondary" type="submit">Search</button>
+			      <form action ="Controlador" method="get" class="d-flex">
+			        <input class="form-control me-2" name="busqueda"type="search" placeholder="Buscar" aria-label="Search">
+			        <button class="btn btn-outline-secondary" name="accion" value="BuscarMisProductos" type="submit">Buscar</button>
 			      </form>
 			      <ul class="navbar-nav">
 			      	<li class="nav-item dropdown">
 			          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true">${cliente.getNombre()}</i></a>
 			          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 			            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-			            <c:choose>
-			            <c:when test="${cliente.getTipoUsuario() == 'ADMINISTRADOR' }">
-			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Productos</a></li>
-			            	
-			            </c:when>
-						<c:otherwise>
-			            	<li><a class="dropdown-item" href="#">${cliente.getTipoUsuario()}Mis Compras</a></li>
-			            </c:otherwise>
-			            </c:choose>
+			            <li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Productos</a></li>
 			            <li><hr class="dropdown-divider"></li>
 			            <li><a class="dropdown-item" href="Controlador?accion=CerrarSesion">Cerrar Sesion</a></li>
 			          </ul>
@@ -57,44 +49,7 @@
 			  </div>
 			</nav>
 		</c:when>
-		<c:otherwise>
-			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			  <div class="container-fluid">
-			    <a class="navbar-brand" href="Controlador?accion=home">Store</a>
-			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			      <span class="navbar-toggler-icon"></span>
-			    </button>
-			    
-			    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-			        <li class="nav-item">
-			          <a class="nav-link" href="#"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
-			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link" href="#">Ofertas del Dia</a>
-			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
-			        </li>
-			      </ul>
-			      <form class="d-flex">
-			        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			        <button class="btn btn-outline-secondary" type="submit">Search</button>
-			      </form>
-			      <ul class="navbar-nav">
-			      	<li class="nav-item dropdown">
-			          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true">Iniciar sesion</i></a>
-			          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-			            <li><a class="dropdown-item" href="iniciarsesion.jsp">Iniciar sesion</a></li>
-			            <li><a class="dropdown-item" href="registro.jsp">Registrarse</a></li>
-			          </ul>
-			        </li>
-			      </ul>
-			    </div>
-			  </div>
-			</nav>
-		</c:otherwise>
-	</c:choose>	
+		</c:choose>
 			<div class="Container mt-4">
 			<h3>Estos son tus productos</h3>
 			<br>

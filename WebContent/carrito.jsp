@@ -30,9 +30,9 @@
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
 			        </li>
 			      </ul>
-			      <form class="d-flex">
-			        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			        <button class="btn btn-outline-secondary" type="submit">Search</button>
+			      <form action="Controlador" method ="get" class="d-flex">
+			        <input class="form-control me-2" name="busqueda" type="search" placeholder="Buscar" aria-label="Search">
+			        <button class="btn btn-outline-secondary" name ="accion" value="Buscar" type="submit">Buscar</button>
 			      </form>
 			      <ul class="navbar-nav">
 			      	<li class="nav-item dropdown">
@@ -78,9 +78,9 @@
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
 			        </li>
 			      </ul>
-			      <form class="d-flex">
-			        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			        <button class="btn btn-outline-secondary" type="submit">Search</button>
+			      <form action="Controlador" method ="get" class="d-flex">
+			        <input class="form-control me-2" name="busqueda" type="search" placeholder="Buscar" aria-label="Search">
+			        <button class="btn btn-outline-secondary" name ="accion" value="Buscar" type="submit">Buscar</button>
 			      </form>
 			      <ul class="navbar-nav">
 			      	<li class="nav-item dropdown">

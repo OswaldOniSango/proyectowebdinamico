@@ -2,8 +2,8 @@ $(document).ready(function (){
 	$(" tr #btnEliminar").click(function(){
 		var idp = $(this).parent().find("#idp").val();
 		swal({
-		  title: "Estas seguro/a?",
-		  text: "Estas a punto de eliminar este item de tu lista de compras!",
+		  title: "¿Estas seguro/a?",
+		  text: "Estas a punto de eliminar este item de tu lista de compras.",
 		  icon: "warning",
 		  buttons: true,
 		  dangerMode: true,

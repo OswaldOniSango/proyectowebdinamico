@@ -280,6 +280,28 @@ public class Controlador extends HttpServlet {
 	    			
 	    			request.getRequestDispatcher("Controlador?accion=VerMisProductos");
 	    			break;
+	    			
+	    		case "Buscar":
+	    			
+	    			String busqueda  = request.getParameter("busqueda");
+	    			productos = pDAO.BuscarProducto(busqueda);
+	    			
+	    			request.setAttribute("cliente",cliente);
+	    			request.setAttribute("productos", productos);
+	    			request.getRequestDispatcher("index.jsp").forward(request, response);
+	    			
+	    			break;
+	    			
+	    			case "BuscarMisProductos":
+	    			
+	    			String busquedaMisProductos  = request.getParameter("busqueda");
+	    			productos = pDAO.BuscarProducto(busquedaMisProductos);
+	    			
+	    			request.setAttribute("cliente",cliente);
+	    			request.setAttribute("productos", productos);
+	    			request.getRequestDispatcher("misproductos.jsp").forward(request, response);
+	    			
+	    			break;
 	    		case "CerrarSesion":
 	    			listaCarrito = new ArrayList<>();
 	                cliente = new Cliente();
