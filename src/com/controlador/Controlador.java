@@ -1,19 +1,23 @@
 package com.controlador;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Blob;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.modelo.Carro;
 import com.modelo.Cliente;
 import com.modelo.ClienteDAO;
+import com.modelo.Compra;
+import com.modelo.CompraDAO;
+import com.modelo.DetalleCompra;
+import com.modelo.DetalleCompraDAO;
+import com.modelo.Pago;
+import com.modelo.PagoDAO;
 import com.modelo.Producto;
 import com.modelo.ProductoDAO;
 import jakarta.servlet.ServletException;
@@ -44,12 +48,20 @@ public class Controlador extends HttpServlet {
     ProductoDAO pDAO = new ProductoDAO();
     List<Producto> productos = new ArrayList<>(); 
     List<Carro> listaCarrito = new ArrayList<>();
+    List<Compra> listaCompra = new ArrayList<>();
+    List<DetalleCompra> listaDetalleCompra = new ArrayList<>();
     int item;
     double totalPagar;
     int cantidad = 1;
     Cliente cliente = new Cliente();
 	ClienteDAO cdao = new ClienteDAO();
     Producto p = new Producto();
+    Pago pago = new Pago();
+    PagoDAO pagoDAO= new PagoDAO();
+    CompraDAO compraDAO = new CompraDAO();
+    DetalleCompraDAO detalleDAO = new DetalleCompraDAO();
+    DetalleCompra detalleCompra = new DetalleCompra();
+    String errorCompra;
     
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -145,6 +157,7 @@ public class Controlador extends HttpServlet {
 	    			request.setAttribute("totalPagar",totalPagar);
 	    			request.getRequestDispatcher("carrito.jsp").forward(request, response);
 	    			break;
+	    			
 	    		case "Eliminar":
 	    			int idPro = Integer.parseInt(request.getParameter("idp"));
 	    			for(int i = 0 ; i < listaCarrito.size() ; i++ ) {
@@ -174,6 +187,7 @@ public class Controlador extends HttpServlet {
 	    			if (cliente.getNombre() != null && cliente.getDni() != null && cliente.getEmail() != null) {
 		    			
 	    				session.setAttribute("cliente", cliente);
+	    				request.setAttribute("carrito", listaCarrito);
 	    				request.getRequestDispatcher("carrito.jsp");
 	    				request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
 	    			}else {
@@ -276,7 +290,7 @@ public class Controlador extends HttpServlet {
 	    		case "EliminarProducto":
 	    			
 	    			int idProducto = Integer.parseInt(request.getParameter("idp"));
-	    			pDAO.EliminarProducto(idProducto);
+	    			pDAO.eliminarProducto(idProducto);
 	    			
 	    			request.getRequestDispatcher("Controlador?accion=VerMisProductos");
 	    			break;
@@ -284,7 +298,7 @@ public class Controlador extends HttpServlet {
 	    		case "Buscar":
 	    			
 	    			String busqueda  = request.getParameter("busqueda");
-	    			productos = pDAO.BuscarProducto(busqueda);
+	    			productos = pDAO.buscarProducto(busqueda);
 	    			
 	    			request.setAttribute("cliente",cliente);
 	    			request.setAttribute("productos", productos);
@@ -292,16 +306,99 @@ public class Controlador extends HttpServlet {
 	    			
 	    			break;
 	    			
-	    			case "BuscarMisProductos":
+	    		case "BuscarMisProductos":
 	    			
 	    			String busquedaMisProductos  = request.getParameter("busqueda");
-	    			productos = pDAO.BuscarProducto(busquedaMisProductos);
+	    			productos = pDAO.buscarProducto(busquedaMisProductos);
 	    			
 	    			request.setAttribute("cliente",cliente);
 	    			request.setAttribute("productos", productos);
 	    			request.getRequestDispatcher("misproductos.jsp").forward(request, response);
 	    			
 	    			break;
+	    			
+	    			
+	    		case "GenerarPago":
+	    				
+	    			if(cliente.getNombre() != null) {	
+		    			if(totalPagar != 0) {	
+			    			pago.setMonto(totalPagar);
+			    			pago.setIdPago(UUID.randomUUID().toString());
+			    			pagoDAO.registrarPago(pago);
+			    			request.setAttribute("carrito", listaCarrito);
+			    			request.setAttribute("totalPagar",totalPagar);
+			    			request.getRequestDispatcher("carrito.jsp").forward(request, response);	
+		    			}else {
+		    				errorCompra = "<div class=\"alert alert-danger\" role=\"alert\">Hemos tenido un error realizando tu pago, por favor verifica que el carrito de compras no este vacio</div>";
+			    			request.setAttribute("errorCompra",errorCompra);
+		    				request.getRequestDispatcher("carrito.jsp").forward(request, response);	
+		    			}
+	    			}else {	
+	    			request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);
+	    			}
+	    			break;
+	    			
+	    		case "GenerarCompra":
+	    			if(cliente.getNombre() != null) {	
+			    		if(pago.getIdPago() != null) {	
+			    			Compra compra = new Compra();
+			    			String fecha = new Date().toString();
+			    			compra.setIdCliente(cliente.getIdCliente());
+			    			compra.setIdPago(pago.getIdPago());
+			    			compra.setFechaCompra(fecha);
+			    			compra.setMonto(totalPagar);
+			    			compra.setEstado("Su producto esta pendiente de envío");
+			    			operacion = compraDAO.registrarCompra(compra);
+				    			if(operacion == 1) {
+				    				compra = compraDAO.buscarCompraSegunIdPago(pago.getIdPago());
+				    				for(int i = 0 ; i < listaCarrito.size() ; i++ ) {
+				    					DetalleCompra detalle = new DetalleCompra();
+				    					detalle.setIdProducto(listaCarrito.get(i).getIdProducto());
+				    					detalle.setIdCompra(compra.getIdCompra());
+				    					detalle.setCantidad(listaCarrito.get(i).getCantidad());
+				    					detalle.setPrecioCompra(listaCarrito.get(i).getSubTotal());
+				    					detalleDAO.insertarDetalleCompra(detalle);
+				    					
+				    				}
+				    				listaCompra.add(compra);
+				    				request.setAttribute("listacompra",listaCompra);
+			    					request.getRequestDispatcher("compras.jsp").forward(request, response);
+				    			}
+			    		}else {
+		    				errorCompra = "<div class=\"alert alert-danger\" role=\"alert\">Para generar la compra primero debes realizar el pago</div>";
+			    			request.setAttribute("errorCompra",errorCompra);
+			    			request.setAttribute("carrito", listaCarrito);
+			    			request.setAttribute("totalPagar",totalPagar);
+		    				request.getRequestDispatcher("carrito.jsp").forward(request, response);	
+			    		}
+	    			}else {
+	    				request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);
+	    			}
+	    				
+	    			break;
+	    			
+	    		case "VerMisCompras":
+	    			
+	    			listaCompra = compraDAO.buscarCompraSegunIdCliente(cliente.getIdCliente());
+	    			request.setAttribute("listacompra",listaCompra);
+	    			request.getRequestDispatcher("compras.jsp").forward(request, response);
+	    			
+	    			break;
+	    		case "Detalle":
+	    			int idC = Integer.parseInt(request.getParameter("id"));
+	    			listaDetalleCompra = detalleDAO.verDetalleCompra(idC); 
+	    			request.setAttribute("totalPagar",totalPagar);
+	    			request.setAttribute("listaDetalleCompra",listaDetalleCompra);
+	    			request.getRequestDispatcher("detalle.jsp").forward(request, response);
+	    			
+	    		break;
+	    		
+	    		case "VerMisVentas":
+	    			listaCompra = compraDAO.buscarCompras();
+	    			request.setAttribute("listacompra",listaCompra);
+	    			request.getRequestDispatcher("misventas.jsp").forward(request, response);
+	    		break;	
+	    		
 	    		case "CerrarSesion":
 	    			listaCarrito = new ArrayList<>();
 	                cliente = new Cliente();
@@ -310,6 +407,7 @@ public class Controlador extends HttpServlet {
 	                break;	
 	    			
 	    		default:
+	    		request.setAttribute("contador",listaCarrito.size());	
 	    		request.setAttribute("cliente",cliente);
 	    		request.setAttribute("productos", productos);
 	    		request.setAttribute("totalPagar",totalPagar);

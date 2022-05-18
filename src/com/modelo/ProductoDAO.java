@@ -138,7 +138,7 @@ public class ProductoDAO {
 		return operacion;
 			
 	}
-	public void EliminarProducto(int id) {
+	public void eliminarProducto(int id) {
 		
 		String sql = "delete from producto where idProducto="+id;
 		try {
@@ -153,7 +153,7 @@ public class ProductoDAO {
 		}
 		
 	}
-	public List<Producto> BuscarProducto(String busqueda){
+	public List<Producto> buscarProducto(String busqueda){
 		List <Producto> productos = new ArrayList<Producto>();
 		String sql = "select * from producto where descripcion like '%" + busqueda + "%'";
 		

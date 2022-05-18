@@ -30,10 +30,6 @@
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
 			        </li>
 			      </ul>
-			      <form action="Controlador" method ="get" class="d-flex">
-			        <input class="form-control me-2" name="busqueda" type="search" placeholder="Buscar" aria-label="Search">
-			        <button class="btn btn-outline-secondary" name ="accion" value="Buscar" type="submit">Buscar</button>
-			      </form>
 			      <ul class="navbar-nav">
 			      	<li class="nav-item dropdown">
 			          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true">${cliente.getNombre()}</i></a>
@@ -42,7 +38,7 @@
 			            <c:choose>
 			            <c:when test="${cliente.getTipoUsuario() == 'ADMINISTRADOR' }">
 			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Productos</a></li>
-			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Ventas</a></li>
+			            	
 			            </c:when>
 						<c:otherwise>
 			            	<li><a class="dropdown-item" href="#">${cliente.getTipoUsuario()}Mis Compras</a></li>
@@ -96,41 +92,33 @@
 			</nav>
 		</c:otherwise>
 	</c:choose>	
-		<div> ${errorCompra}</div>
 			<div class="Container mt-4">
-			<h3>Estos son los zapatos seleccionados para su compra</h3>
+			<h3>Estos son sus compras</h3>
 			<br>
 				<div class="row">
-					<div class="col-sm-8">
+					<div class="col-sm-8 mx-auto">
 						<table class = "table table-hover">
 							<thead>
 								<tr>
-									<th>ITEM</th>
-									<th>NOMBRE</th>
-									<th>DESCRIPCION</th>
-									<th>PRECIO</th>
-									<th>CANTIDAD</th>
-									<th>SUBTOTAL</th>
-									<th>ACCIONES</th>
+									<th>Codigo de Cliente</th>
+									<th>Codigo de Compra</th>
+									<th>Fecha de Compra</th>
+									<th>Monto</th>
+									<th>Codigo de Pago</th>
+									<th>Estado</th>
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach var="prodCarrito" items="${carrito}">
+							<c:forEach var="compra" items="${listacompra}">
 								<tr>
-									<td>${prodCarrito.getItem()}</td>
-									<td>${prodCarrito.getNombre()}</td>
-									<td>${prodCarrito.getDescripcion()}
-										<img src="ControladorIMG?id=${prodCarrito.getIdProducto()}" width="100" height="100">
-									</td>
-									<td>${prodCarrito.getPrecioCompra()}</td>
+									<td>${compra.getIdCliente()}</td>
+									<td>${compra.getIdCompra()}</td>
+									<td>${compra.getFechaCompra()}</td>
+									<td>${compra.getMonto()}</td>
+									<td>${compra.getIdPago()}</td>
+									<td>${compra.getEstado()}</td>
 									<td>
-										<input type="hidden" id= "idpro" value="${prodCarrito.getIdProducto()}">
-										<input class ="form-control text-center" type="number" id="cantidad" min ="1" value="${prodCarrito.getCantidad()}">
-									</td>
-									<td>${prodCarrito.getSubTotal()}</td>
-									<td>
-										<input type="hidden" id= "idp" value="${prodCarrito.getIdProducto()}">													
-										<a class ="form-control text-center" id= "btnEliminar" href="#"><i class="fas fa-trash"></i></a>
+									<a href="Controlador?accion=Detalle&id=${compra.getIdCompra()}">Ver detalles</a>
 									</td>
 								</tr>
 							</c:forEach>								
@@ -138,26 +126,7 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="col-sm-4">
-						<div class="card">
-							<div class="card-header">
-								<h3>Esta es su compra:</h3>
-							</div>
-							<div class="card-body">
-							<label> Subtotal:</label>
-							<input type="text" value="US$ ${totalPagar}0" readonly="" class="form-control">
-							<label> Descuento:</label>
-							<input type="text" value="US$ 0.00"readonly="" class="form-control">
-							<label> Total a Pagar:</label>
-							<input type="text" value="US$ ${totalPagar}0"readonly="" class="form-control">	
-							
-							</div>
-							<div class="card-footer">
-								<a href="Controlador?accion=GenerarPago" class="btn btn-info btn-block" class>Realizar Pago</a>
-								<a href="Controlador?accion=GenerarCompra" class="btn btn-danger btn-block" class>Generar Compra</a>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

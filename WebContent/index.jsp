@@ -45,10 +45,10 @@
 			            <c:choose>
 			            <c:when test="${cliente.getTipoUsuario() == 'ADMINISTRADOR' }">
 			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Productos</a></li>
-			            	
+			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisVentas">Mis Ventas</a></li>
 			            </c:when>
 						<c:otherwise>
-			            	<li><a class="dropdown-item" href="#">${cliente.getTipoUsuario()}Mis Compras</a></li>
+			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisCompras">Mis Compras</a></li>
 			            </c:otherwise>
 			            </c:choose>
 			            

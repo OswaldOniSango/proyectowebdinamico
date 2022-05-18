@@ -115,22 +115,17 @@
 						<div class="card">
 							<div class="card-body">
 								<label><h2>Agregar nuevo producto</h2></label><br>
-								<label style="left"> id</label>
-								<input type="text" name="id" class="form-control" required><br>
 								
 								<label> Nombre </label>
 								<input type="text" name="nombre" class="form-control" required><br>
 								
-								<div style="color:red">${errorClienteRegistradoDni}</div>
 								<label> Foto </label>
 								<input id="imagen" type="file" alt="" name = "foto" class="form-control" required><br>
 								<img id="imagen">
 								
-								<div style="color:red">${errorClienteRegistradoEmail}</div>
 								<label> Descripcion </label>
 								<input type="text" name ="descripcion"class="form-control"required><br>
 								
-								<div style="color:red">${ContraseñaInvalida}</div>
 								<label>Precio</label>
 								<input type="number" name="precio"class="form-control" required><br>
 								
@@ -139,7 +134,6 @@
 								
 								
 								<button name="accion" value="RegistroProductos" type="submit" class="btn btn-primary btn-lg btn-block col-sm-12" >Agregar producto</button><br>
-								<div style="color:red">${errorRegistro}</div>
 									
 							</div>	
 						</div>
