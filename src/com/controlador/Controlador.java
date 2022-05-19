@@ -300,10 +300,16 @@ public class Controlador extends HttpServlet {
 	    			String busqueda  = request.getParameter("busqueda");
 	    			productos = pDAO.buscarProducto(busqueda);
 	    			
-	    			request.setAttribute("cliente",cliente);
-	    			request.setAttribute("productos", productos);
-	    			request.getRequestDispatcher("index.jsp").forward(request, response);
-	    			
+	    			if(productos.size() != 0) {
+		    			request.setAttribute("cliente",cliente);
+		    			request.setAttribute("productos", productos);
+		    			request.getRequestDispatcher("index.jsp").forward(request, response);
+	    			}else {
+	    				String error ="Disculpa. no hemos encontrado productos con tu descripcion";
+	    				request.setAttribute("error", error);
+	    				request.setAttribute("cliente",cliente);
+		    			request.getRequestDispatcher("index.jsp").forward(request, response);
+	    			}
 	    			break;
 	    			
 	    		case "BuscarMisProductos":
@@ -381,24 +387,61 @@ public class Controlador extends HttpServlet {
 	    			
 	    			listaCompra = compraDAO.buscarCompraSegunIdCliente(cliente.getIdCliente());
 	    			request.setAttribute("listacompra",listaCompra);
-	    			request.getRequestDispatcher("compras.jsp").forward(request, response);
-	    			
+	    			if (cliente.getNombre() != null){
+		    			request.getRequestDispatcher("compras.jsp").forward(request, response);
+		    		}else {
+	    			request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);
+		    		}
 	    			break;
 	    		case "Detalle":
 	    			int idC = Integer.parseInt(request.getParameter("id"));
-	    			listaDetalleCompra = detalleDAO.verDetalleCompra(idC); 
-	    			request.setAttribute("totalPagar",totalPagar);
-	    			request.setAttribute("listaDetalleCompra",listaDetalleCompra);
-	    			request.getRequestDispatcher("detalle.jsp").forward(request, response);
-	    			
+	    			listaDetalleCompra = detalleDAO.verDetalleCompra(idC);
+	    			if (cliente.getNombre() != null){
+		    			request.setAttribute("listaDetalleCompra",listaDetalleCompra);
+		    			request.getRequestDispatcher("detalle.jsp").forward(request, response);
+	    			}else {
+	    				request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);
+	    			}
 	    		break;
 	    		
 	    		case "VerMisVentas":
 	    			listaCompra = compraDAO.buscarCompras();
 	    			request.setAttribute("listacompra",listaCompra);
-	    			request.getRequestDispatcher("misventas.jsp").forward(request, response);
-	    		break;	
+	    			
+	    			if (cliente.getTipoUsuario() != null){
+		    			request.getRequestDispatcher("misventas.jsp").forward(request, response);
+		    		}else if(cliente.getNombre() != null && cliente.getTipoUsuario() == null) {
+		    			request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
+		    		}else if(cliente.getNombre() == null & cliente.getTipoUsuario() == null ){
+		    			request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);	
+		    		}
+	    			
+	    		break;
 	    		
+	    		case "MiPerfil":
+	    			request.setAttribute("cliente",cliente);
+	    			request.getRequestDispatcher("perfil.jsp").forward(request, response);
+	    		break;
+	    		
+	    		case "CambiarContrasenia":
+	    			String mensaje;
+	    			String passwordNuevo = request.getParameter("password");
+	    			String passwordNuevo1 = request.getParameter("password1");
+	    			if (passwordNuevo1.equals(passwordNuevo)) {
+	    				int resultado = cdao.actualizarContrasenia(cliente.getIdCliente(), passwordNuevo1);
+	    					if(resultado ==  1) {
+	    					mensaje = "Se ha modificado su contraseña exitosamente.";
+	    					request.setAttribute("mensaje", mensaje);
+	    					request.getRequestDispatcher("perfil.jsp").forward(request, response);
+	    					}
+	    			}else {
+	    				mensaje = "Las contraseñas deben coincidir";
+	    				request.setAttribute("ContraseñaInvalida", mensaje);
+	    				request.getRequestDispatcher("Cambiarcontrasenia.jsp").forward(request, response);
+	    			}
+	    			
+	    			
+	    		break;	
 	    		case "CerrarSesion":
 	    			listaCarrito = new ArrayList<>();
 	                cliente = new Cliente();

@@ -34,11 +34,11 @@
 			      	<li class="nav-item dropdown">
 			          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true">${cliente.getNombre()}</i></a>
 			          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-			            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+			            <li><a class="dropdown-item" href="Controlador?accion=MiPerfil">Mi Perfil</a></li>
 			            <c:choose>
 			            <c:when test="${cliente.getTipoUsuario() == 'ADMINISTRADOR' }">
 			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Productos</a></li>
-			            	
+			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisVentas">Mis Ventas</a></li>
 			            </c:when>
 						<c:otherwise>
 			            	<li><a class="dropdown-item" href="#">${cliente.getTipoUsuario()}Mis Compras</a></li>
@@ -93,7 +93,7 @@
 		</c:otherwise>
 	</c:choose>	
 			<div class="Container mt-4">
-			<h3>Estos son sus compras</h3>
+			<h3>Estos son las compras realizadas por tus clientes</h3>
 			<br>
 				<div class="row">
 					<div class="col-sm-8 mx-auto">

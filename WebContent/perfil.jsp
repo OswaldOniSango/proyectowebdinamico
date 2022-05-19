@@ -58,7 +58,7 @@
 		<div class="col-sm-8 mx-auto">
 			<div class="card">
 				<div class="card-header">
-					<h3>Detalle:</h3>
+					<h3>Mi perfil</h3>
 				</div>
 				
 				<div class="card-body">
@@ -67,22 +67,26 @@
 								<table class = "table table-hover">
 									<thead>
 										<tr>
-											<th>Codigo de Compra</th>
-											<th>Articulo</th>
-											<th>Cantidad</th>
-											<th>Precio</th>
+											<div style="color:red">${mensaje}</div>
 										</tr>
 									</thead>
 									<tbody>
-									<c:forEach var="detalle" items="${listaDetalleCompra}">
+
 										<tr>
-											<td>${detalle.getIdCompra()}</td>
-											<td><img src="ControladorIMG?id=${detalle.getIdProducto()}" width="100" height="100"></td>
-											<td>${detalle.getCantidad()}</td>
-											<td>US$ ${detalle.getPrecioCompra()}0</td>
+											<td>Nombre: ${cliente.getNombre()}</td>
 										</tr>
-										<c:set var="precioTotal" value ="${precioTotal + detalle.getPrecioCompra()}"></c:set>
-									</c:forEach>									
+										<tr>
+											<td>Apellido: ${cliente.getApellido()}</td>
+										</tr>
+										<tr>
+											<td>Documento: ${cliente.getDni()}</td>
+										</tr>
+										<tr>
+											<td>E-mail: ${cliente.getEmail()}</td>
+										</tr>
+										<tr>
+											<td>Contraseña: <a href="Cambiarcontrasenia.jsp">Cambiar contraseña</a></td>
+										</tr>							
 									</tbody>
 								</table>
 							</div>	
@@ -90,8 +94,7 @@
 					</div>
 				
 				<div class="card-footer">
-					<div align="Right"><input type="text"  style="width:150px" value="US$ ${precioTotal}0"readonly="" class="form-control">
-					</div>
+					
 				</div>
 			</div>
 		</div>

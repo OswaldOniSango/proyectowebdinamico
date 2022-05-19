@@ -113,4 +113,25 @@ public class ClienteDAO {
 	return existe;
 	}
 	
+	public int actualizarContrasenia(int id, String password) {
+		Conexion con = new Conexion();
+		Connection conn;
+		PreparedStatement ps;
+		int operacion = -1;
+		String sql = "Update cliente set password = ? where idCliente = ?";
+		try {
+			conn = con.obtenerConexion();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, password);
+			ps.setInt(2, id);
+			operacion = ps.executeUpdate();
+			ps.close();
+			conn.close();
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		
+		return operacion;
+	}
+	
 }
