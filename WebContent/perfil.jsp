@@ -58,7 +58,7 @@
 		<div class="col-sm-8 mx-auto">
 			<div class="card">
 				<div class="card-header">
-					<h3>Mi perfil</h3>
+					<div align ="center"><img width="100" height = "100"src="imagenes/user.png"></div>
 				</div>
 				
 				<div class="card-body">
@@ -71,7 +71,8 @@
 										</tr>
 									</thead>
 									<tbody>
-
+										
+						
 										<tr>
 											<td>Nombre: ${cliente.getNombre()}</td>
 										</tr>

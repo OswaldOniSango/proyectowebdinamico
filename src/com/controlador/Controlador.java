@@ -103,6 +103,7 @@ public class Controlador extends HttpServlet {
 	    		case "AgregarCarrito":
 	    			idp = Integer.parseInt(request.getParameter("id"));
 	    			p = pDAO.listarID(idp);
+	    			
 	    			cantidad = 1;
 	    			int pos = 0;
 	    			if(listaCarrito.size() > 0) {
@@ -141,7 +142,7 @@ public class Controlador extends HttpServlet {
 		    			car.setSubTotal(cantidad*p.getPrecio());
 		    			listaCarrito.add(car);
 	    			}
-	    			String mensaje = "<div class=\"alert alert-info\" role=\"alert\">Se ha agregado "+ car.getNombre() +" a tu lista de compras</div>";
+	    			String mensaje = "<div class=\"alert alert-info\" role=\"alert\">Se ha agregado "+ p.getNombre() +" a tu lista de compras</div>";
 	    			request.setAttribute("mensaje",mensaje);
 	    			request.setAttribute("contador",listaCarrito.size());
 	    			request.getRequestDispatcher("Controlador?accion=home").forward(request,response);
@@ -441,7 +442,7 @@ public class Controlador extends HttpServlet {
 	    						request.getRequestDispatcher("perfil.jsp").forward(request, response);
 	    					}
 	    			}else {
-	    				mensajeContrasenia = "Las contraseñas deben coincidir";
+	    				mensajeContrasenia = "<div class=\"alert alert-danger\" role=\"alert\">Las contraseñas deben coincidir</div>";
 	    				request.setAttribute("ContraseñaInvalida", mensajeContrasenia);
 	    				request.getRequestDispatcher("Cambiarcontrasenia.jsp").forward(request, response);
 	    			}
