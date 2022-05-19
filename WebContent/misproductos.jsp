@@ -51,6 +51,7 @@
 			</nav>
 		</c:when>
 		</c:choose>
+		<div> ${mensajeRegistroProducto}</div>
 			<div class="Container mt-4">
 			<h3>Estos son tus productos</h3>
 			<br>

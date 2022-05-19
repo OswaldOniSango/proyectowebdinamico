@@ -96,7 +96,7 @@
 			</nav>
 		</c:otherwise>
 	</c:choose>	
-		<div> ${errorCompra}</div>
+		<div> ${mensaje}</div>
 			<div class="Container mt-4">
 			<h3>Estos son los zapatos seleccionados para su compra</h3>
 			<br>

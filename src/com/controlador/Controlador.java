@@ -75,7 +75,7 @@ public class Controlador extends HttpServlet {
 	    	
 	        
 	    	int idp;
-	    	Carro car;
+	    	Carro car = null;
 	    	switch(accion) {
 	    	  	case "Comprar":
 	    	  		totalPagar = 0;
@@ -141,6 +141,8 @@ public class Controlador extends HttpServlet {
 		    			car.setSubTotal(cantidad*p.getPrecio());
 		    			listaCarrito.add(car);
 	    			}
+	    			String mensaje = "<div class=\"alert alert-info\" role=\"alert\">Se ha agregado "+ car.getNombre() +" a tu lista de compras</div>";
+	    			request.setAttribute("mensaje",mensaje);
 	    			request.setAttribute("contador",listaCarrito.size());
 	    			request.getRequestDispatcher("Controlador?accion=home").forward(request,response);
 	    			break;
@@ -191,7 +193,7 @@ public class Controlador extends HttpServlet {
 	    				request.getRequestDispatcher("carrito.jsp");
 	    				request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
 	    			}else {
-	    				String errorValidacion = "Usuario o contraseña incorrecta";
+	    				String errorValidacion = "<div class=\"alert alert-danger\" role=\"alert\">Usuario o contraseña incorrecta</div>";
 	    				request.setAttribute("ErrorValidacion", errorValidacion);
 	    				request.getRequestDispatcher("iniciarsesion.jsp").forward(request, response);
 	    			}
@@ -211,11 +213,11 @@ public class Controlador extends HttpServlet {
 	    			String tipoUsuario = null;
 	    		
 	    			if (cdao.existeClienteEmail(email) == true) {
-	    				String errorClienteRegistradoEmail = "Este correo ya ha sido registrado.";
+	    				String errorClienteRegistradoEmail = "<div class=\"alert alert-danger\" role=\"alert\">Este correo ya ha sido registrado.</div>";
 	    				request.setAttribute("errorClienteRegistradoEmail", errorClienteRegistradoEmail);
 	    			}
 	    			if (cdao.existeClienteDni(dni) == true) {
-	    				String errorClienteRegistradoDni = "Este DNI ya ha sido registrado.";
+	    				String errorClienteRegistradoDni = "<div class=\"alert alert-danger\" role=\"alert\">Este DNI ya ha sido registrado.</div>";
 	    				request.setAttribute("errorClienteRegistradoDni", errorClienteRegistradoDni);
 	    			}
 	    			
@@ -233,13 +235,13 @@ public class Controlador extends HttpServlet {
 		    				request.getRequestDispatcher("carrito.jsp");
 			    			request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
 		    			}else {
-		    				String errorRegistro = "Disculpa, hemos tenido un error al registrarte. <Br>Por favor, intenta mas tarde.";
+		    				String errorRegistro = "<div class=\"alert alert-danger\" role=\"alert\">Hemos tenido problemas registrandote, Intenta mas tarde</div>";
 		    				request.setAttribute("errorRegistro", errorRegistro);
 		    				request.getRequestDispatcher("registro.jsp").forward(request, response);
 		    			}
 		    			
 	    			} else {
-	    				String errorPass = "Las contraseñas deben coincidir";
+	    				String errorPass = "<div class=\"alert alert-danger\" role=\"alert\">Las contraseñas deben coincidir</div>";
 	    				request.setAttribute("ContraseñaInvalida", errorPass);
 	    				request.getRequestDispatcher("registro.jsp").forward(request, response);
 	    			}
@@ -264,15 +266,15 @@ public class Controlador extends HttpServlet {
 	    			break;
 	    			
 	    		case "RegistroProductos":
+	    			String mensajeRegistroProducto;
 	    			Part archivo = request.getPart("foto");
 	    			InputStream is = archivo.getInputStream();    			
-	    			int id = Integer.parseInt(request.getParameter("id"));
 	    			String name = request.getParameter("nombre");
 	    			String descripcion = request.getParameter("descripcion");
 	    			double precio = Double.parseDouble(request.getParameter("precio"));
 	    			int stock = Integer.parseInt(request.getParameter("stock"));
 	    			
-	    			p.setId(id);
+	    			
 	    			p.setNombre(name);
 	    			p.setFoto(is);
 	    			p.setDescripcion(descripcion);
@@ -280,18 +282,20 @@ public class Controlador extends HttpServlet {
 	    			p.setStock(stock);
 	    			
 	    			int operacion = pDAO.insertarProducto(p);
-	    			
-	    			System.out.println(operacion);
-	    			
-	    			
-	    			request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+	    			if(operacion == 1) {
+	    				mensajeRegistroProducto = "<div class=\"alert alert-success\" role=\"alert\">Su producto ha sido registrado exitosamente.</div>";
+	    				request.setAttribute("mensajeRegistroProducto", mensajeRegistroProducto);
+	    				request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+	    			}else {
+	    				mensajeRegistroProducto = "<div class=\"alert alert-danger\" role=\"alert\">No hemos podido registrar su producto.</div>";
+	    				request.setAttribute("mensajeRegistroProducto", mensajeRegistroProducto);
+	    				request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+	    			}
 	    			break;
 	    			
 	    		case "EliminarProducto":
-	    			
-	    			int idProducto = Integer.parseInt(request.getParameter("idp"));
+    				int idProducto = Integer.parseInt(request.getParameter("idp"));
 	    			pDAO.eliminarProducto(idProducto);
-	    			
 	    			request.getRequestDispatcher("Controlador?accion=VerMisProductos");
 	    			break;
 	    			
@@ -305,10 +309,10 @@ public class Controlador extends HttpServlet {
 		    			request.setAttribute("productos", productos);
 		    			request.getRequestDispatcher("index.jsp").forward(request, response);
 	    			}else {
-	    				String error ="Disculpa. no hemos encontrado productos con tu descripcion";
+	    				String error ="<div class=\"alert alert-danger\" role=\"alert\">Disculpa. no hemos encontrado productos con tu descripcion</div>";
 	    				request.setAttribute("error", error);
 	    				request.setAttribute("cliente",cliente);
-		    			request.getRequestDispatcher("index.jsp").forward(request, response);
+		    			request.getRequestDispatcher("Controlador?accion=home.jsp").forward(request, response);
 	    			}
 	    			break;
 	    			
@@ -325,18 +329,20 @@ public class Controlador extends HttpServlet {
 	    			
 	    			
 	    		case "GenerarPago":
-	    				
+	    			String mensajePago;	
 	    			if(cliente.getNombre() != null) {	
-		    			if(totalPagar != 0) {	
+		    			if(totalPagar != 0) {
+		    				mensajePago ="<div class=\"alert alert-success\" role=\"alert\">Pago realizado exitosamente.</div>";
 			    			pago.setMonto(totalPagar);
 			    			pago.setIdPago(UUID.randomUUID().toString());
 			    			pagoDAO.registrarPago(pago);
+			    			request.setAttribute("mensaje",mensajePago);;
 			    			request.setAttribute("carrito", listaCarrito);
 			    			request.setAttribute("totalPagar",totalPagar);
 			    			request.getRequestDispatcher("carrito.jsp").forward(request, response);	
 		    			}else {
-		    				errorCompra = "<div class=\"alert alert-danger\" role=\"alert\">Hemos tenido un error realizando tu pago, por favor verifica que el carrito de compras no este vacio</div>";
-			    			request.setAttribute("errorCompra",errorCompra);
+		    				mensajePago = "<div class=\"alert alert-danger\" role=\"alert\">Hemos tenido un error realizando tu pago, por favor verifica que el carrito de compras no este vacio</div>";
+			    			request.setAttribute("mensaje",mensajePago);
 		    				request.getRequestDispatcher("carrito.jsp").forward(request, response);	
 		    			}
 	    			}else {	
@@ -424,19 +430,19 @@ public class Controlador extends HttpServlet {
 	    		break;
 	    		
 	    		case "CambiarContrasenia":
-	    			String mensaje;
+	    			String mensajeContrasenia;
 	    			String passwordNuevo = request.getParameter("password");
 	    			String passwordNuevo1 = request.getParameter("password1");
 	    			if (passwordNuevo1.equals(passwordNuevo)) {
 	    				int resultado = cdao.actualizarContrasenia(cliente.getIdCliente(), passwordNuevo1);
 	    					if(resultado ==  1) {
-	    					mensaje = "Se ha modificado su contraseña exitosamente.";
-	    					request.setAttribute("mensaje", mensaje);
-	    					request.getRequestDispatcher("perfil.jsp").forward(request, response);
+	    						mensajeContrasenia = "<div class=\"alert alert-success\" role=\"alert\">Se ha modificado su contraseña exitosamente.</div>";
+	    						request.setAttribute("mensaje", mensajeContrasenia);
+	    						request.getRequestDispatcher("perfil.jsp").forward(request, response);
 	    					}
 	    			}else {
-	    				mensaje = "Las contraseñas deben coincidir";
-	    				request.setAttribute("ContraseñaInvalida", mensaje);
+	    				mensajeContrasenia = "Las contraseñas deben coincidir";
+	    				request.setAttribute("ContraseñaInvalida", mensajeContrasenia);
 	    				request.getRequestDispatcher("Cambiarcontrasenia.jsp").forward(request, response);
 	    			}
 	    			

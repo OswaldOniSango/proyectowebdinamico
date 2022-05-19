@@ -100,6 +100,7 @@
 		</c:otherwise>
 	</c:choose>	
 		<div>${error}</div>
+		<div>${mensaje}</div>
 		<div class = "container mt-4">
 			<div class="row">
 			 <c:forEach var="p" items="${productos}">
