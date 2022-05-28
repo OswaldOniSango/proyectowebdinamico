@@ -132,7 +132,6 @@
 								<label>Stock</label>
 								<input type="number" name="stock" class="form-control" required><br>
 								
-								
 								<button name="accion" value="RegistroProductos" type="submit" class="btn btn-primary btn-lg btn-block col-sm-12" >Agregar producto</button><br>
 									
 							</div>	

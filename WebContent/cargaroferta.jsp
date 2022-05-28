@@ -8,7 +8,17 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css"> 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
 		<meta charset="UTF-8">
-			<title>ShoppingCart</title>
+		<style>
+		input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button {
+		    -webkit-appearance: none;
+		    margin: 0;
+		}
+		input[type=number] {
+		    -moz-appearance:textfield;
+		}
+		
+		</style>
+			<title>Registrar Producto Nuevo</title>
 	</head>
 	<body>
 	<c:choose>
@@ -23,35 +33,34 @@
 			    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link" href="home.jsp"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
+			          <a class="nav-link" href="Controlador?accion=VerMisProductos"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="Controlador?accion=VerOfertas">Ofertas del Dia</a>
+			          <a class="nav-link" href="#">Ofertas del Dia</a>
 			        </li>
 			        <li class="nav-item">
 			          <a class="nav-link" href="Controlador?accion=Carrito" title="Carrito de Compras"><i class="fas fa-cart-plus"><label style="color: darkorange">  (${contador})</label></i></a>
 			        </li>
 			      </ul>
-			      <form action="Controlador" method ="get" class="d-flex">
-			        <input class="form-control me-2" name="busqueda" type="search" placeholder="Buscar" aria-label="Search">
-			        <button class="btn btn-outline-secondary" name ="accion" value="Buscar" type="submit">Buscar</button>
+			      <form class="d-flex">
+			        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+			        <button class="btn btn-outline-secondary" type="submit">Search</button>
 			      </form>
 			      <ul class="navbar-nav">
 			      	<li class="nav-item dropdown">
-			          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"> ${cliente.getNombre()}</i></a>
+			          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true">${cliente.getNombre()}</i></a>
 			          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 			          
-			            <li><a class="dropdown-item" href="Controlador?accion=MiPerfil">Mi Perfil</a></li>
+			            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
 			            <c:choose>
 			            <c:when test="${cliente.getTipoUsuario() == 'ADMINISTRADOR' }">
 			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisProductos">Mis Productos</a></li>
-			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisVentas">Mis Ventas</a></li>
+			            	
 			            </c:when>
 						<c:otherwise>
-			            	<li><a class="dropdown-item" href="Controlador?accion=VerMisCompras">Mis Compras</a></li>
+			            	<li><a class="dropdown-item" href="#">${cliente.getTipoUsuario()}Mis Compras</a></li>
 			            </c:otherwise>
 			            </c:choose>
-			            
 			            <li><hr class="dropdown-divider"></li>
 			            <li><a class="dropdown-item" href="Controlador?accion=CerrarSesion">Cerrar Sesion</a></li>
 			          </ul>
@@ -72,18 +81,18 @@
 			    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link" href="home.jsp"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
+			          <a class="nav-link" href="Controlador?accion=VerMisProductos"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="Controlador?accion=VerOfertas">Ofertas del Dia</a>
+			          <a class="nav-link" href="#">Ofertas del Dia</a>
 			        </li>
 			        <li class="nav-item">
 			          <a class="nav-link" href="Controlador?accion=Carrito" title="Carrito de Compras"><i class="fas fa-cart-plus"><label style="color: darkorange">  (${contador})</label></i></a>
 			        </li>
 			      </ul>
-			      <form action="Controlador" method ="get" class="d-flex">
-			        <input class="form-control me-2" name="busqueda" type="search" placeholder="Buscar" aria-label="Search">
-			        <button class="btn btn-outline-secondary" name ="accion" value="Buscar" type="submit">Buscar</button>
+			      <form class="d-flex">
+			        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+			        <button class="btn btn-outline-secondary" type="submit">Search</button>
 			      </form>
 			      <ul class="navbar-nav">
 			      	<li class="nav-item dropdown">
@@ -98,35 +107,28 @@
 			  </div>
 			</nav>
 		</c:otherwise>
-	</c:choose>	
-		<div>${error}</div>
-		<div>${mensaje}</div>
-		<div class = "container mt-4">
-			<div class="row">
-			 <c:forEach var="p" items="${productos}">
-				<div class="col-sm-4 form-group">
-					<div class="card">
-						<div class="card-header text-center">
-							<label>${p.getNombre()}</label>
-						</div>
-						<div class="card-body text-center">
-						<img src="ControladorIMG?id=${p.getId()}" width="200" height = "250"><br>
-							<i>US$ ${p.getPrecio()}0</i>
-						</div>
-						<div class="card-footer text-center">
-							<label>${p.getDescripcion()}</label><br>
-							<div>
-								<a href="Controlador?accion=AgregarCarrito&id=${p.getId()}" class="btn btn-outline-info"><i class="fas fa-cart-plus">Agregar a Carrito</i></a>
-								<a href="Controlador?accion=Comprar&id=${p.getId()}"class="btn btn-danger">Comprar</a>
-							</div>
+	</c:choose>
+	
+	<form action="Controlador" method = "post" enctype="multipart/form-data" class="text-center">
+				<img width="80" height = "80"src="imagenes/jordan.png"></div>
+					<div class="col-sm-4 mx-auto" >
+						<div class="card">
+							<div class="card-body">
+								<label><h2>Colocar Producto en Oferta</h2></label><br>
+								
+								<input type="hidden" name="idp" value="${idProducto}" class="form-control" required><br>
+								
+								<label>Precio de oferta</label>
+								<input type="number" name="precio"class="form-control" required><br>
+								
+								<button name="accion" value="CargarOferta" type="submit" class="btn btn-primary btn-lg btn-block col-sm-12" >Aceptar</button><br>
+									
+							</div>	
 						</div>
 					</div>
-				</div><br>
-			</c:forEach>		
-			</div>
-		</div>
-		<!-- JavaScript Bundle with Popper -->
-<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>		
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+				</form>
+	
+	<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>		
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	</body>
 </html>

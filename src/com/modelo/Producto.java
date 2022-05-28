@@ -9,18 +9,22 @@ public class Producto {
 	String descripcion;
 	double precio;
 	int stock;
+	boolean oferta;
+	double precioOferta;
 	
 	public Producto() {
 		
 	}
 	
-	public Producto(int  id, String nombre, InputStream foto, String descripcion, double precio, int stock) {
+	public Producto(int  id, String nombre, InputStream foto, String descripcion, double precio, int stock, boolean oferta, double precioOferta) {
 		this.id = id;
 		this.nombre = nombre;
 		this.foto = foto;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.stock = stock;
+		this.oferta = oferta;
+		this.precioOferta = precioOferta;
 	}
 
 	public int getId() {
@@ -70,6 +74,19 @@ public class Producto {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	
+	public void setOferta(boolean oferta) {
+		this.oferta = oferta;
+	}
+	public boolean getOferta() {
+		return oferta;
+	}
+
+	public double getPrecioOferta() {
+		return precioOferta;
+	}
+
+	public void setPrecioOferta(double precioOferta) {
+		this.precioOferta = precioOferta;
+	}
 	
 }

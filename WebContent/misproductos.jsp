@@ -24,7 +24,7 @@
 			          <a class="nav-link" href="#"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="#">Ofertas del Dia</a>
+			          <a class="nav-link" href="Controlador?accion=VerOfertas">Ofertas del Dia</a>
 			        </li>
 			        <li class="nav-item">
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
@@ -67,6 +67,7 @@
 									<th>FOTO</th>
 									<th>PRECIO</th>
 									<th>STOCK</th>
+									<th>OFERTA</th>
 									<th>ACCIONES</th>
 								</tr>
 							</thead>
@@ -79,10 +80,25 @@
 									<td><img src="ControladorIMG?id=${p.getId()}" width="100" height="100"></td>
 									<td>${p.getPrecio()}</td>
 									<td>${p.getStock()}</td>
+									<c:choose>
+									    <c:when test="${p.getOferta()== true}">
+									        <td>  
+											<input type="text" value="Si" readonly="" class="form-control text-center">
+									        <a href="Controlador?accion=EliminarOferta&idp=${p.getId()}" class="form-control text-center"><img src="imagenes/eliminar.png" width="25" height="25"></a>
+									        </td>
+									    </c:when>    
+									    <c:otherwise>
+									        <td><input type="text" value="No" readonly="" class="form-control text-center"></td>
+									    </c:otherwise>
+									</c:choose>
+									
 									<td>
-										<input type="hidden" id= "idp" value="${p.getId()}">													
+										<input type="hidden" name ="idp" id= "idp" value="${p.getId()}">													
 										<a class = "form-control text-center" id= "btnEliminarProducto" href="#"><i class="fas fa-trash"></i></a>
+										<a href="Controlador?accion=Oferta&idp=${p.getId()}" class="form-control text-center"><img src="imagenes/oferta.png" width="25" height="25"></a>
 									</td>
+									
+									
 								</tr>
 							</c:forEach>							
 							</tbody>

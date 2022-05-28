@@ -24,7 +24,7 @@
 			          <a class="nav-link" href="#"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="#">Ofertas del Dia</a>
+			          <a class="nav-link" href="Controlador?accion=VerOfertas">Ofertas del Dia</a>
 			        </li>
 			        <li class="nav-item">
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>
@@ -68,7 +68,7 @@
 			          <a class="nav-link" href="#"><i class="fa fa-home" aria-hidden="true"></i>Home<span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="#">Ofertas del Dia</a>
+			          <a class="nav-link" href="Controlador?accion=VerOfertas">Ofertas del Dia</a>
 			        </li>
 			        <li class="nav-item">
 			          <a class="nav-link" href="Controlador?accion=home">Seguir comprando</a>

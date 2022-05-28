@@ -46,7 +46,8 @@ public class Controlador extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     ProductoDAO pDAO = new ProductoDAO();
-    List<Producto> productos = new ArrayList<>(); 
+    List<Producto> productos = new ArrayList<>();
+    List<Producto> productosOferta = new ArrayList<>(); 
     List<Carro> listaCarrito = new ArrayList<>();
     List<Compra> listaCompra = new ArrayList<>();
     List<DetalleCompra> listaDetalleCompra = new ArrayList<>();
@@ -274,6 +275,8 @@ public class Controlador extends HttpServlet {
 	    			String descripcion = request.getParameter("descripcion");
 	    			double precio = Double.parseDouble(request.getParameter("precio"));
 	    			int stock = Integer.parseInt(request.getParameter("stock"));
+	    			Boolean oferta = false;
+	    			double precioOferta = 0;
 	    			
 	    			
 	    			p.setNombre(name);
@@ -281,6 +284,8 @@ public class Controlador extends HttpServlet {
 	    			p.setDescripcion(descripcion);
 	    			p.setPrecio(precio);
 	    			p.setStock(stock);
+	    			p.setOferta(oferta);
+	    			p.setPrecioOferta(precioOferta);
 	    			
 	    			int operacion = pDAO.insertarProducto(p);
 	    			if(operacion == 1) {
@@ -326,9 +331,61 @@ public class Controlador extends HttpServlet {
 	    			request.setAttribute("productos", productos);
 	    			request.getRequestDispatcher("misproductos.jsp").forward(request, response);
 	    			
-	    			break;
+	    		break;
+	    		
+	    		case "Oferta":
+	    			int id = Integer.parseInt(request.getParameter("idp"));
+	    			if (cliente.getTipoUsuario() != null){
+	    				request.setAttribute("idProducto", id);
+	    				request.getRequestDispatcher("cargaroferta.jsp").forward(request, response);
+	    			}else {
+	    				request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
+	    			}
+	    		break;
+	    		
+	    		case"CargarOferta":
+	    			int idpro = Integer.parseInt(request.getParameter("idp"));
+	    			double pOferta = Double.parseDouble(request.getParameter("precio"));
+	    			if (cliente.getTipoUsuario() != null){
+	    				int actualizacion = pDAO.agregarOferta(idpro, pOferta);
+		    				if(actualizacion == 1) {
+		    					mensajeRegistroProducto = "<div class=\"alert alert-success\" role=\"alert\">Su descuento ha sido registrado exitosamente.</div>";
+		    					request.setAttribute("mensajeRegistroProducto", mensajeRegistroProducto);
+		    					request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+		    				}else {
+		    					mensajeRegistroProducto = "<div class=\"alert alert-danger\" role=\"alert\">No hemos podido registrar el descuento a su producto.</div>";
+		    					request.setAttribute("mensajeRegistroProducto", mensajeRegistroProducto);
+		    					request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+		    				}
+		    		}else {
+	    				request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
+	    			}
 	    			
+	    		break;
+	    		case"EliminarOferta":
+	    			idpro = Integer.parseInt(request.getParameter("idp"));
+	    			if (cliente.getTipoUsuario() != null){
+	    				int actualizacion = pDAO.eliminarOferta(idpro);
+		    				if(actualizacion == 1) {
+		    					mensajeRegistroProducto = "<div class=\"alert alert-success\" role=\"alert\">Hemos eliminado el descuento de este producto exitosamente.</div>";
+		    					request.setAttribute("mensajeRegistroProducto", mensajeRegistroProducto);
+		    					request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+		    				}else {
+		    					mensajeRegistroProducto = "<div class=\"alert alert-danger\" role=\"alert\">No hemos podido eliminar el descuento de este producto.</div>";
+		    					request.setAttribute("mensajeRegistroProducto", mensajeRegistroProducto);
+		    					request.getRequestDispatcher("Controlador?accion=VerMisProductos").forward(request, response);
+		    				}
+		    		}else {
+	    				request.getRequestDispatcher("Controlador?accion=home").forward(request, response);
+	    			}
 	    			
+	    		break;	
+	    		
+	    		case "VerOfertas":
+	    			productosOferta = pDAO.listarProductosOferta();
+	    			request.setAttribute("productosOferta", productosOferta);
+	    			request.getRequestDispatcher("ofertas.jsp").forward(request, response);
+	    		break;	
 	    		case "GenerarPago":
 	    			String mensajePago;	
 	    			if(cliente.getNombre() != null) {	

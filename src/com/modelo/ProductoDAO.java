@@ -27,7 +27,9 @@ public class ProductoDAO {
 				prod.setFoto(rs.getBinaryStream(3));
 				prod.setDescripcion(rs.getString(4));
 				prod.setPrecio(rs.getDouble(5));
-				prod.setStock(rs.getInt(5));
+				prod.setStock(rs.getInt(6));
+				prod.setOferta(rs.getBoolean(7));
+				prod.setPrecioOferta(rs.getDouble(8));
 			}
 			
 		}catch(Exception e) {
@@ -52,6 +54,8 @@ public class ProductoDAO {
 				p.setDescripcion(rs.getString(4));
 				p.setPrecio(rs.getDouble(5));
 				p.setStock(rs.getInt(6));
+				p.setOferta(rs.getBoolean(7));
+				p.setPrecioOferta(rs.getDouble(8));
 				productos.add(p);
 			}
 		}catch(Exception e) {
@@ -99,7 +103,7 @@ public class ProductoDAO {
 	public int insertarProducto (Producto producto) {
 		
 		int operacion = -1;
-		String sql = "Insert into producto(idProducto, nombre, foto, descripcion, precio, stock) values(?, ?, ? ,?, ?, ?)";
+		String sql = "Insert into producto(idProducto, nombre, foto, descripcion, precio, stock,oferta,precio_oferta) values(?, ?, ? ,?, ?, ?,?,?)";
 		
 		try {
 			conn = cn.obtenerConexion();
@@ -127,6 +131,8 @@ public class ProductoDAO {
 			ps.setString(4, producto.getDescripcion());
 			ps.setDouble(5, producto.getPrecio());
 			ps.setInt   (6, producto.getStock());
+			ps.setBoolean(7, producto.getOferta());
+			ps.setDouble(8, producto.getPrecioOferta());
 			operacion = ps.executeUpdate();
 			ps.close();
 			conn.close();
@@ -170,6 +176,7 @@ public class ProductoDAO {
 				p.setDescripcion(rs.getString("descripcion"));
 				p.setPrecio(rs.getDouble("precio"));
 				p.setStock(rs.getInt("stock"));
+				p.setOferta(rs.getBoolean("oferta"));
 				productos.add(p);
 			}
 		}catch(Exception e) {
@@ -179,5 +186,74 @@ public class ProductoDAO {
 		
 		return productos;
 		
+	}
+	public int agregarOferta(int id, double precioOferta) {
+		Conexion con = new Conexion();
+		Connection conn;
+		PreparedStatement ps;
+		int operacion = -1;
+		String sql = "Update producto set oferta = ?, precio_oferta = ? where idProducto = ?";
+		try {
+			conn = con.obtenerConexion();
+			ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, true);
+			ps.setDouble(2, precioOferta);
+			ps.setInt(3, id);
+			operacion = ps.executeUpdate();
+			ps.close();
+			conn.close();
+		}catch(Exception e) {
+			e.getMessage();
+		}
+	
+		return operacion;
+	}
+	public List<Producto> listarProductosOferta() {
+		List<Producto>productosOferta = new ArrayList<>();
+		String sql="select * from producto where oferta = true";
+		try {
+			conn = cn.obtenerConexion();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Producto p = new Producto();
+				p.setId(rs.getInt(1));
+				p.setNombre(rs.getString(2));
+				p.setFoto(rs.getBinaryStream(3));
+				p.setDescripcion(rs.getString(4));
+				p.setPrecio(rs.getDouble(5));
+				p.setStock(rs.getInt(6));
+				p.setOferta(rs.getBoolean(7));
+				p.setPrecioOferta(rs.getDouble(8));
+				productosOferta.add(p);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return productosOferta;
+		
+	}
+
+	public int eliminarOferta(int idpro) {
+			Conexion con = new Conexion();
+			Connection conn;
+			PreparedStatement ps;
+			int operacion = -1;
+			String sql = "Update producto set oferta = ? where idProducto = ?";
+			try {
+				conn = con.obtenerConexion();
+				ps = conn.prepareStatement(sql);
+				ps.setBoolean(1, false);
+				ps.setInt(2, idpro);
+				operacion = ps.executeUpdate();
+				ps.close();
+				conn.close();
+			}catch(Exception e) {
+				e.getMessage();
+			}
+		
+			return operacion;
 	}
 }
