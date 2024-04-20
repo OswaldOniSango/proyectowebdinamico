@@ -5,7 +5,7 @@ CREATE TABLE `cliente` (
   `dni` varchar(8) DEFAULT NULL,
   `email` varchar(244) DEFAULT NULL,
   `password` varchar(244) DEFAULT NULL,
-  `tipo_usuario` varchar(1) DEFAULT NULL
+  `tipo_usuario` varchar(244) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --INSERT INTO `cliente` (`Id`, `Dni`, `Nombres`, `Direccion`, `Estado`) VALUES
