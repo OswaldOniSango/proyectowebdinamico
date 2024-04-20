@@ -23,7 +23,7 @@ public class ProductoDAO {
 	ResultSet rs;
 
 	public Producto listarID(int id) {
-		String sql = "select * from producto where idProducto="+id;
+		String sql = "select * from producto where id="+id;
 		Producto prod = new Producto();
 		try {
 			conn = cn.obtenerConexion();
@@ -77,7 +77,7 @@ public class ProductoDAO {
 	}
 
 	public void listarImg(int id, HttpServletResponse response) {
-		String sql = "select * from producto where idProducto =" +id;
+		String sql = "select * from producto where id =" +id;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		BufferedInputStream bufferedInputStream = null;

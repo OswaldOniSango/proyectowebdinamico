@@ -50,7 +50,7 @@ public class ClienteDAO {
 			rs = ps.executeQuery();
 
 			while(rs.next()) {
-				cliente.setIdCliente(rs.getInt("idCliente"));
+				cliente.setIdCliente(rs.getInt("id"));
 				cliente.setNombre(rs.getString("nombre"));
 				cliente.setApellido(rs.getString("apellido"));
 				cliente.setDni(rs.getString("dni"));
