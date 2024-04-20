@@ -84,7 +84,7 @@
 									    <c:when test="${p.getOferta()== true}">
 									        <td>  
 											<input type="text" value="Si" readonly="" class="form-control text-center">
-									        <a href="Controlador?accion=EliminarOferta&idp=${p.getId()}" class="form-control text-center"><img src="imagenes/eliminar.png" width="25" height="25"></a>
+									        <a href="Controlador?accion=EliminarOferta&idp=${p.getId()}" title="Eliminar Oferta"class="form-control text-center"><img src="imagenes/eliminar.png" width="25" height="25"></a>
 									        </td>
 									    </c:when>    
 									    <c:otherwise>
@@ -94,8 +94,8 @@
 									
 									<td>
 										<input type="hidden" name ="idp" id= "idp" value="${p.getId()}">													
-										<a class = "form-control text-center" id= "btnEliminarProducto" href="#"><i class="fas fa-trash"></i></a>
-										<a href="Controlador?accion=Oferta&idp=${p.getId()}" class="form-control text-center"><img src="imagenes/oferta.png" width="25" height="25"></a>
+										<a class = "form-control text-center" title="Eliminar Producto" id= "btnEliminarProducto" href="#"><i class="fas fa-trash"></i></a>
+										<a href="Controlador?accion=Oferta&idp=${p.getId()}" title="Colocar en oferta"class="form-control text-center"><img src="imagenes/oferta.png" width="25" height="25"></a>
 									</td>
 									
 									

@@ -7,7 +7,7 @@ public class DetalleCompra {
 	private int cantidad;
 	private double precioCompra;
 	public DetalleCompra() {
-		
+
 	}
 	public DetalleCompra(int idDetalle, int idProducto, int idCompra, int cantidad, double precioCompra) {
 		this.idDetalle = idDetalle;
@@ -46,7 +46,7 @@ public class DetalleCompra {
 	public void setPrecioCompra(double precioCompra) {
 		this.precioCompra = precioCompra;
 	}
-	
-	
+
+
 
 }

@@ -14,7 +14,7 @@ public class DetalleCompraDAO {
 	PreparedStatement ps;
 	ResultSet rs;
 		public void insertarDetalleCompra(DetalleCompra detalle) {
-			String sql = "Insert into detalle_compra(idProducto, idCompra, cantidad, precioCompra) values(?,?,?,?)";
+			String sql = "Insert into detalle_compra(id_producto, id_compra, cantidad, Precio_compra) values(?,?,?,?)";
 			try {
 			conn = con.obtenerConexion();
 			ps = conn.prepareStatement(sql);
@@ -25,16 +25,16 @@ public class DetalleCompraDAO {
 			ps.execute();
 			ps.close();
 			conn.close();
-			
-			
+
+
 		}catch (Exception e) {
 			e.getMessage();
 		}
 	}
 		public List<DetalleCompra> verDetalleCompra(int idCompra) {
-			String sql = "Select * from detalle_compra where idCompra="+idCompra;
+			String sql = "Select * from detalle_compra where id_compra="+idCompra;
 			List<DetalleCompra> listaDetalle = new ArrayList<>();
-			
+
 			try {
 				conn = con.obtenerConexion();
 				ps = conn.prepareStatement(sql);
@@ -48,9 +48,9 @@ public class DetalleCompraDAO {
 						detalle.setPrecioCompra(rs.getDouble(5));
 						listaDetalle.add(detalle);
 					}
-					
+
 			}catch (Exception e) {
-				
+
 			}
 			return listaDetalle;
 		}

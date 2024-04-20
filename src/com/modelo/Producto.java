@@ -11,11 +11,11 @@ public class Producto {
 	int stock;
 	boolean oferta;
 	double precioOferta;
-	
+
 	public Producto() {
-		
+
 	}
-	
+
 	public Producto(int  id, String nombre, InputStream foto, String descripcion, double precio, int stock, boolean oferta, double precioOferta) {
 		this.id = id;
 		this.nombre = nombre;
@@ -88,5 +88,5 @@ public class Producto {
 	public void setPrecioOferta(double precioOferta) {
 		this.precioOferta = precioOferta;
 	}
-	
+
 }

@@ -111,7 +111,7 @@
 							<tbody>
 							<c:forEach var="compra" items="${listacompra}">
 								<tr>
-									<td>${compra.getIdCliente()}</td>
+									<td><a href="Controlador?accion=VerPerfilCliente&id=${compra.getIdCliente()}">${compra.getIdCliente()}</a></td>
 									<td>${compra.getIdCompra()}</td>
 									<td>${compra.getFechaCompra()}</td>
 									<td>${compra.getMonto()}</td>

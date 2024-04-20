@@ -8,11 +8,11 @@ public class Carro {
 	double precioCompra;
 	int cantidad;
 	double subTotal;
-	
+
 	public Carro() {
-		
+
 	}
-	
+
 	public Carro(int item, int idProducto, String nombre, String descripcion, double precioCompra, int cantidad,
 			double subTotal) {
 		super();

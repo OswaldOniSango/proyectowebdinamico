@@ -1,7 +1,7 @@
 package com.modelo;
 
 public class Cliente {
-	
+
 	private int idCliente;
 	private String nombre;
 	private String apellido;
@@ -9,11 +9,11 @@ public class Cliente {
 	private String email;
 	private String password;
 	private String tipoUsuario;
-	
+
 	public Cliente () {
-		
+
 	}
-	
+
 	public Cliente(int idCliente, String nombre, String apellido, String dni, String email, String password, String tipoUsuario) {
 		super();
 		this.idCliente = idCliente;
@@ -25,7 +25,7 @@ public class Cliente {
 		this.tipoUsuario = tipoUsuario;
 	}
 
-	
+
 	public int getIdCliente() {
 		return idCliente;
 	}
@@ -50,7 +50,7 @@ public class Cliente {
 	 public String getDni() {
 		return dni;
 	}
-	
+
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
@@ -77,8 +77,8 @@ public class Cliente {
 	public void setTipoUsuario(String tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
 	}
-	
-	
-	
+
+
+
 
 }

@@ -1,8 +1,17 @@
 package com.modelo;
 
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.config.Conexion;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +21,7 @@ public class ProductoDAO {
 	Conexion cn = new Conexion();
 	PreparedStatement ps;
 	ResultSet rs;
-	
+
 	public Producto listarID(int id) {
 		String sql = "select * from producto where idProducto="+id;
 		Producto prod = new Producto();
@@ -21,7 +30,7 @@ public class ProductoDAO {
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				
+
 				prod.setId(rs.getInt(1));
 				prod.setNombre(rs.getString(2));
 				prod.setFoto(rs.getBinaryStream(3));
@@ -31,14 +40,14 @@ public class ProductoDAO {
 				prod.setOferta(rs.getBoolean(7));
 				prod.setPrecioOferta(rs.getDouble(8));
 			}
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return prod;
-		
+
 	}
-	
+
 	public List<Producto> listar() {
 		List<Producto>productos = new ArrayList<>();
 		String sql="select * from producto";
@@ -60,21 +69,21 @@ public class ProductoDAO {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-			
+
 		}
-		
+
 		return productos;
-		
+
 	}
-	
+
 	public void listarImg(int id, HttpServletResponse response) {
 		String sql = "select * from producto where idProducto =" +id;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		BufferedInputStream bufferedInputStream = null;
 		BufferedOutputStream bufferedOutputStream = null;
-		
-		
+
+
 		try {
 			outputStream = response.getOutputStream();
 			conn = cn.obtenerConexion();
@@ -92,19 +101,19 @@ public class ProductoDAO {
 				}
 				bufferedOutputStream.close();
 			}
-			
+
 		}catch(Exception e) {
 			e.getStackTrace();
 		}
-		
-		
+
+
 	}
-	
+
 	public int insertarProducto (Producto producto) {
-		
+
 		int operacion = -1;
-		String sql = "Insert into producto(idProducto, nombre, foto, descripcion, precio, stock,oferta,precio_oferta) values(?, ?, ? ,?, ?, ?,?,?)";
-		
+		String sql = "Insert into producto(id, nombre, foto, descripcion, precio, stock,oferta,precio_oferta) values(?, ?, ? ,?, ?, ?,?,?)";
+
 		try {
 			conn = cn.obtenerConexion();
 			ps = conn.prepareStatement(sql);
@@ -122,9 +131,9 @@ public class ProductoDAO {
 			byte[] bytes = baos.toByteArray();
 			Blob pic = conn.createBlob();
 			pic.setBytes(1, bytes);
-			
+
 			//----------------------------------------------------------
-			
+
 			ps.setInt   (1, producto.getId());
 			ps.setString(2, producto.getNombre());
 			ps.setBlob  (3, pic);
@@ -137,18 +146,18 @@ public class ProductoDAO {
 			ps.close();
 			conn.close();
 
-			
+
 		}catch(Exception e) {
 			e.getMessage();
 		}
 		return operacion;
-			
+
 	}
 	public void eliminarProducto(int id) {
-		
-		String sql = "delete from producto where idProducto="+id;
+
+		String sql = "delete from producto where id="+id;
 		try {
-			
+
 			conn = cn.obtenerConexion();
 			ps = conn.prepareStatement(sql);
 			ps.execute();
@@ -157,20 +166,20 @@ public class ProductoDAO {
 		}catch(Exception e) {
 			e.getMessage();
 		}
-		
+
 	}
 	public List<Producto> buscarProducto(String busqueda){
-		List <Producto> productos = new ArrayList<Producto>();
+		List <Producto> productos = new ArrayList<>();
 		String sql = "select * from producto where descripcion like '%" + busqueda + "%'";
-		
+
 		try {
-			
+
 			conn = cn.obtenerConexion();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Producto p = new Producto();
-				p.setId(rs.getInt("idProducto"));
+				p.setId(rs.getInt("id"));
 				p.setNombre(rs.getString("nombre"));
 				p.setFoto(rs.getBinaryStream("foto"));
 				p.setDescripcion(rs.getString("descripcion"));
@@ -182,17 +191,17 @@ public class ProductoDAO {
 		}catch(Exception e) {
 			e.getMessage();
 		}
-		
-		
+
+
 		return productos;
-		
+
 	}
 	public int agregarOferta(int id, double precioOferta) {
 		Conexion con = new Conexion();
 		Connection conn;
 		PreparedStatement ps;
 		int operacion = -1;
-		String sql = "Update producto set oferta = ?, precio_oferta = ? where idProducto = ?";
+		String sql = "Update producto set oferta = ?, precio_oferta = ? where id = ?";
 		try {
 			conn = con.obtenerConexion();
 			ps = conn.prepareStatement(sql);
@@ -205,7 +214,7 @@ public class ProductoDAO {
 		}catch(Exception e) {
 			e.getMessage();
 		}
-	
+
 		return operacion;
 	}
 	public List<Producto> listarProductosOferta() {
@@ -229,11 +238,11 @@ public class ProductoDAO {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-			
+
 		}
-		
+
 		return productosOferta;
-		
+
 	}
 
 	public int eliminarOferta(int idpro) {
@@ -241,7 +250,7 @@ public class ProductoDAO {
 			Connection conn;
 			PreparedStatement ps;
 			int operacion = -1;
-			String sql = "Update producto set oferta = ? where idProducto = ?";
+			String sql = "Update producto set oferta = ? where id = ?";
 			try {
 				conn = con.obtenerConexion();
 				ps = conn.prepareStatement(sql);
@@ -253,7 +262,7 @@ public class ProductoDAO {
 			}catch(Exception e) {
 				e.getMessage();
 			}
-		
+
 			return operacion;
 	}
 }

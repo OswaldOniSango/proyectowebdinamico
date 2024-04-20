@@ -11,9 +11,9 @@ public class Compra {
 	private String estado;
 	int id = 100;
 	public Compra() {
-		
+
 	}
-	
+
 	public Compra (int idCompra, int idCliente, String idPago, String fechaCompra, double monto, String estado) {
 		this.idCompra = idCompra;
 		this.idCliente = idCliente;
@@ -46,7 +46,7 @@ public class Compra {
 	public void setIdPago(String idPago) {
 		this.idPago = idPago;
 	}
- 
+
 	public String getFechaCompra() {
 		return fechaCompra;
 	}
@@ -70,9 +70,9 @@ public class Compra {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
+
 	public int generedorID () {
-		
+
 		id++;
 		return id;
 	}

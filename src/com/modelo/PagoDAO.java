@@ -11,13 +11,13 @@ public class PagoDAO {
 	Conexion con = new Conexion();
 	ResultSet rs;
 	PreparedStatement ps;
-	public void registrarPago(Pago pay) {
+	public void registrarPago(Pago pago) {
 		String sql = "insert into pago (idPAgo, monto) values (?,?)";
 		try {
 		conn = con.obtenerConexion();
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, pay.getIdPago());
-		ps.setDouble(2, pay.getMonto());
+		ps.setString(1, pago.getIdPago());
+		ps.setDouble(2, pago.getMonto());
 		ps.execute();
 		ps.close();
 		conn.close();
