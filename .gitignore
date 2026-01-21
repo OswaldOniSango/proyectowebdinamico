@@ -1,0 +1,5 @@
+target/
+.idea/
+*.iml
+.mvn/maven.config
+integration-tests/node_modules/
